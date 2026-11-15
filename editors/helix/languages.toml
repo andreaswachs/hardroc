@@ -1,0 +1,47 @@
+# Helix language configuration for hardroc.
+#
+# Merge this into ~/.config/helix/languages.toml.  Helix ships a built-in
+# `roc` language entry that runs `roc experimental-lsp`; the `[[language]]` block
+# below overrides that language's server list so `hardroc` is used instead.
+#
+# Build/install the server first:
+#     cargo install --path . --locked
+# or point `command` at an absolute path to `target/release/hardroc`.
+
+[language-server.hardroc]
+command = "hardroc"
+args = ["--stdio"]
+
+# Optional settings. Helix passes this table as initializationOptions.
+[language-server.hardroc.config]
+compilerDiagnostics = true
+syntaxDiagnostics = true
+checkDebounceMs = 800
+checkTimeoutSecs = 90
+inspectPackages = true
+maxWorkspaceFiles = 20000
+
+[language-server.hardroc.config.inlayHints]
+enabled = true
+parameterNames = true
+parameterTypes = true
+returnTypes = true
+bindingTypes = true
+
+[language-server.hardroc.config.completion]
+snippets = true
+builtins = true
+packageMembers = true
+resolveDocumentation = true
+
+[[language]]
+name = "roc"
+scope = "source.roc"
+injection-regex = "roc"
+file-types = ["roc"]
+shebangs = ["roc"]
+roots = ["main.roc", "app.roc", "package.roc", ".git"]
+comment-token = "#"
+indent = { tab-width = 4, unit = "\t" }
+language-servers = ["hardroc"]
+auto-format = true
